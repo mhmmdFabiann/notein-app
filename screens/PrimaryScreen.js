@@ -1,85 +1,117 @@
-import { View, Text, StyleSheet, Image, Pressable, ScrollView} from 'react-native';
-import {LinearGradient} from 'expo-linear-gradient'
-
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, Image, Pressable, ScrollView, BackHandler, Alert } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const data = [
-    { title: 'Menyelesaikan Design Mockup', paragraph: 'Deadline: Monday' },
-    { title: 'Menyelesaikan app nya', paragraph: 'Deadline: Monday' },
-    { title: 'Membuat Laporan Aplikasi', paragraph: 'Deadline: Monday' },
-    // Tambahkan data lainnya di sini jika diperlukan
-  ];
+  { title: 'Menyelesaikan Design Mockup', paragraph: 'Deadline: Monday' },
+  { title: 'Menyelesaikan app nya', paragraph: 'Deadline: Monday' },
+  { title: 'Membuat Laporan Aplikasi', paragraph: 'Deadline: Monday' },
+  // Tambahkan data lainnya di sini jika diperlukan
+];
 
-export default function PrimaryScreen({ navigation, route , notes, setNotes}) {
-    const { nama } = route.params || { nama: "User" };
-    return (
-      <View style={{ flex: 1, backgroundColor: '#202326' }}>
-        <ScrollView>
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#202326', paddingTop: 80 }}>
-            <Text style={styles.judul2Kiri}>Hello {nama}</Text>
-            <Pressable
-              style={styles.cardPanjang}
-              flexDirection='row'
-              gap={20}
-            >
-              <View style={{ justifyContent: 'flex-start' }}>
-                <Text style={styles.textCP}>Progress Hari ini</Text>
-                <Text style={styles.paragraphCP}>Kamu telah membuat 5 Notes selama ini Teruskan!</Text>
-              </View>
-              <View style={styles.progressContainer}>
-                <LinearGradient
-                  colors={['#00C2FF', '#0047FF']}
-                  style={styles.circle}
-                >
-                  <Text style={styles.circleText}>5</Text>
-                </LinearGradient>
-              </View>
-            </Pressable>
-  
-            <View style={{ flexDirection: 'row', gap: 20 }}>
-              <Pressable
-                style={styles.cardPendek}
-                marginBottom={30}
-                onPress={() => navigation.navigate('NoteC')}
-              >
-                <Image
-                  style={styles.imageKecil}
-                  source={require('./../assets/images/notego.png')}
-                />
-                <Text style={styles.textCD}>Kategori</Text>
-                <Text style={styles.paragraphCD}>List Kategori</Text>
-              </Pressable>
-              <Pressable
-                style={styles.cardPendek}
-                marginBottom={30}
-                onPress={() => navigation.navigate('TrashFile')}
-              >
-                <Image
-                  style={styles.imageKecil}
-                  source={require('./../assets/images/t4sampahputih.png')}
-                />
-                <Text style={styles.textCD}>Sampah</Text>
-                <Text style={styles.paragraphCD}>List Sampah</Text>
-              </Pressable>
-            </View>
-  
-            <Text style={styles.judul2Kiri}>Terbaru</Text>
-  
-          {data.map((item, index) => (
-              <Pressable
-                key={index}
-                style={styles.card}
-              >
-                <Text style={styles.textKiri}>{item.title}</Text>
-                <Text style={styles.paragraphCP}>{item.paragraph}</Text>
-              </Pressable>
-            ))}
-      </View>
-      </ScrollView>
-      </View>
-      
-      
+export default function PrimaryScreen({ navigation, route, notes, setNotes }) {
+  const { nama } = route.params || { nama: "User" };
+
+  // useEffect untuk menangani tombol kembali
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackPress
     );
-  }
+
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
+
+  // Fungsi untuk menangani tombol kembali
+  const handleBackPress = () => {
+    // Menampilkan pesan konfirmasi sebelum menutup aplikasi
+    Alert.alert(
+      "Konfirmasi",
+      "Apakah Anda ingin keluar?",
+      [
+        {
+          text: "Tidak",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        {
+          text: "Ya",
+          onPress: () => BackHandler.exitApp()
+        }
+      ]
+    );
+    return true; // true agar tombol kembali tidak melakukan navigasi kembali
+  };
+
+  return (
+    <View style={{ flex: 1, backgroundColor: '#202326' }}>
+      <ScrollView>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#202326', paddingTop: 80 }}>
+          <Text style={styles.judul2Kiri}>Hello {nama}</Text>
+          <Pressable
+            style={styles.cardPanjang}
+            flexDirection='row'
+            gap={20}
+          >
+            <View style={{ justifyContent: 'flex-start' }}>
+              <Text style={styles.textCP}>Progress Hari ini</Text>
+              <Text style={styles.paragraphCP}>Kamu telah membuat 5 Notes selama ini Teruskan!</Text>
+            </View>
+            <View style={styles.progressContainer}>
+              <LinearGradient
+                colors={['#00C2FF', '#0047FF']}
+                style={styles.circle}
+              >
+                <Text style={styles.circleText}>5</Text>
+              </LinearGradient>
+            </View>
+          </Pressable>
+
+          <View style={{ flexDirection: 'row', gap: 20 }}>
+            <Pressable
+              style={styles.cardPendek}
+              marginBottom={30}
+              onPress={() => navigation.navigate('NoteC')}
+            >
+              <Image
+                style={styles.imageKecil}
+                source={require('./../assets/images/notego.png')}
+              />
+              <Text style={styles.textCD}>Kategori</Text>
+              <Text style={styles.paragraphCD}>List Kategori</Text>
+            </Pressable>
+            <Pressable
+              style={styles.cardPendek}
+              marginBottom={30}
+              onPress={() => navigation.navigate('TrashFile')}
+            >
+              <Image
+                style={styles.imageKecil}
+                source={require('./../assets/images/t4sampahputih.png')}
+              />
+              <Text style={styles.textCD}>Sampah</Text>
+              <Text style={styles.paragraphCD}>List Sampah</Text>
+            </Pressable>
+          </View>
+
+          <Text style={styles.judul2Kiri}>Terbaru</Text>
+
+          {data.map((item, index) => (
+            <Pressable
+              key={index}
+              style={styles.card}
+            >
+              <Text style={styles.textKiri}>{item.title}</Text>
+              <Text style={styles.paragraphCP}>{item.paragraph}</Text>
+            </Pressable>
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+  );
+}
 
   const styles = StyleSheet.create({
     container: {
