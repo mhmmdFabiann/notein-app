@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, Pressable, ScrollView, Modal} from 'reac
 import { LongPressGestureHandler } from 'react-native-gesture-handler';
 
 export default function NotesScreen({ route, navigation, notes, setNotes }) {
-    const { category } = route.params;
     const [noteToDelete, setNoteToDelete] = useState(null);
     const [confirmationModalVisible, setConfirmationModalVisible] = useState(false);
   
@@ -15,6 +14,14 @@ export default function NotesScreen({ route, navigation, notes, setNotes }) {
       navigation.navigate('EditText', {
         onNoteSaved: updateNotes,
         initialNoteData: noteData,
+      });
+    };
+
+    const navigateToOnlyEdit = (noteData, index) => {
+      navigation.navigate('OnlyEdit', {
+        onNoteSaved: updateNotes,
+        initialNoteData: noteData,
+        selectedIndex: index, // Include the index in the navigation params
       });
     };
   
@@ -42,7 +49,7 @@ export default function NotesScreen({ route, navigation, notes, setNotes }) {
               marginTop: 70,
               marginBottom: 50,
             }}
-            onPress={() => navigation.navigate('NoteC')}
+            onPress={() => navigation.navigate('Primary')}
           >
             <Image
               style={{
@@ -62,7 +69,7 @@ export default function NotesScreen({ route, navigation, notes, setNotes }) {
               paddingTop: 0,
             }}
           >
-            <Text style={styles.judulKiri}>{category.title}</Text>
+            <Text style={styles.judulKiri}>Notes</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -82,7 +89,7 @@ export default function NotesScreen({ route, navigation, notes, setNotes }) {
                   <View>
                     <Pressable
                       style={styles.card}
-                      onPress={() => navigateToEditText(note)}
+                      onPress={() => navigateToOnlyEdit(note, index)}
                     >
                       <Text style={styles.textKiri}>{note?.title}</Text>
                       <Text style={styles.paragraph}>{note?.notes}</Text>

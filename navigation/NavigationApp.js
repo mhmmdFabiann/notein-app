@@ -6,7 +6,7 @@ import LoginScreen from '../screens/LoginScreen';
 import LoginScreen2 from '../screens/LoginScreen2';
 import PrimaryScreen from '../screens/PrimaryScreen';
 import EditTextScreen from '../screens/EditTextScreen';
-import NoteCategories from '../screens/NoteCategories';
+import OnlyEditScreen from '../screens/OnlyEditScreen';
 import NotesScreen from '../screens/NotesScreen';
 import TrashFiles from '../screens/TrashFile';
 
@@ -30,9 +30,28 @@ export default function NavigationApp() {
     />
     <Stack.Screen
       name="Primary"
-      component={PrimaryScreen}
       options={{ headerShown: false }}
-    />
+    >
+      {(props) => (
+        <PrimaryScreen
+          {...props}
+          notes={notes}
+          setNotes={setNotes}
+        />
+      )}
+    </Stack.Screen>
+    <Stack.Screen
+      name="OnlyEdit"
+      options={{ headerShown: false }}
+    >
+      {(props) => (
+        <OnlyEditScreen
+          {...props}
+          notes={notes}
+          setNotes={setNotes}
+        />
+      )}
+    </Stack.Screen>
     <Stack.Screen
       name="EditText"
       options={{ headerShown: false }}
@@ -40,7 +59,6 @@ export default function NavigationApp() {
       {(props) => (
         <EditTextScreen
           {...props}
-          categories={categories}
           notes={notes}
           setNotes={setNotes}
         />
@@ -52,25 +70,12 @@ export default function NavigationApp() {
       options={{ headerShown: false }}
     />
     <Stack.Screen
-      name="NoteC"
-      options={{ headerShown: false }}
-    >
-      {(props) => (
-        <NoteCategories
-          {...props}
-          categories={categories}
-          setCategories={setCategories}
-        />
-      )}
-    </Stack.Screen>
-    <Stack.Screen
       name="Notes"
       options={{ headerShown: false }}
     >
       {(props) => (
         <NotesScreen
           {...props}
-          categories={categories}
           notes={notes}
           setNotes={setNotes}
         />
