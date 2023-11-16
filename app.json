@@ -22,14 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.taufiknrrr.notein"
+      "package": "com.abingchilling.notein"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "00c87bf3-8ced-482e-8c61-57b2aabd43e7"
+        "projectId": "b9928c7b-2fea-41b1-9894-cfb9c5b1d174"
       }
     }
   }
